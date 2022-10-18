@@ -27,9 +27,12 @@ def make_model():
     return model
 
 class Generator(keras.utils.Sequence):
-    def __init__(self, image_dir, batch_size):
+    def __init__(self, image_dir, batch_size, shuffle = True):
         self.image_paths = [os.path.join(image_dir, filepath) for filepath in os.listdir(image_dir)]
-        np.random.shuffle(self.image_paths)
+        self.shuffle = shuffle
+
+        if self.shuffle:
+            np.random.shuffle(self.image_paths)
         
         self.batch_size = batch_size
 
@@ -43,17 +46,29 @@ class Generator(keras.utils.Sequence):
         ), np.array([int(os.path.basename(filepath).split("_")[0]) for filepath in filepaths])
 
     def on_epoch_end(self):
-        np.random.shuffle(self.image_paths)
+        if self.shuffle:
+            np.random.shuffle(self.image_paths)
 
 
 
 def main():
 
-    model = make_model()
-    model.fit(
+    model_with_shuffle = make_model()
+    model_without_shuffle = make_model()
+
+    model_with_shuffle.fit(
         Generator(os.path.join("custom_datasets", "mnist", "train"), batch_size = 64),
         epochs = 5,
+        validation_data = Generator(os.path.join("custom_datasets", "mnist", "val"), batch_size = 64)
     )
+    model_without_shuffle.fit(
+        Generator(os.path.join("custom_datasets", "mnist", "train"), batch_size = 64, shuffle = False),
+        epochs = 5,
+        validation_data = Generator(os.path.join("custom_datasets", "mnist", "val"), batch_size = 64, shuffle = False)
+    )
+
+    print("Shuffle: ", model_with_shuffle.evaluate(Generator(os.path.join("custom_datasets", "mnist", "test"), batch_size = 64)))
+    print("Without shuffle: ", model_without_shuffle.evaluate(Generator(os.path.join("custom_datasets", "mnist", "test"), batch_size = 64)))
 
 if __name__ == "__main__":
     main()

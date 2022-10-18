@@ -29,6 +29,7 @@ def make_model():
 class Generator(keras.utils.Sequence):
     def __init__(self, image_dir, batch_size, shuffle = True):
         self.image_paths = [os.path.join(image_dir, filepath) for filepath in os.listdir(image_dir)]
+        
         self.shuffle = shuffle
 
         if self.shuffle:
@@ -56,17 +57,20 @@ def main():
     model_with_shuffle = make_model()
     model_without_shuffle = make_model()
 
+    print("\n\nTraining with shuffle: ")
     model_with_shuffle.fit(
-        Generator(os.path.join("custom_datasets", "mnist", "train"), batch_size = 64),
+        Generator(os.path.join("custom_datasets", "mnist", "train"), batch_size = 64, shuffle = True),
         epochs = 5,
-        validation_data = Generator(os.path.join("custom_datasets", "mnist", "val"), batch_size = 64)
+        validation_data = Generator(os.path.join("custom_datasets", "mnist", "val"), batch_size = 64, shuffle = True)
     )
+    print("\n\nTraining without shuffle:")
     model_without_shuffle.fit(
         Generator(os.path.join("custom_datasets", "mnist", "train"), batch_size = 64, shuffle = False),
         epochs = 5,
         validation_data = Generator(os.path.join("custom_datasets", "mnist", "val"), batch_size = 64, shuffle = False)
     )
 
+    print("\n\nResults on test data:")
     print("Shuffle: ", model_with_shuffle.evaluate(Generator(os.path.join("custom_datasets", "mnist", "test"), batch_size = 64)))
     print("Without shuffle: ", model_without_shuffle.evaluate(Generator(os.path.join("custom_datasets", "mnist", "test"), batch_size = 64)))
 

@@ -121,6 +121,7 @@ def preprocessing_on_tfds():
 
 
 def main():
+    preprocessing_on_custom_dataset()
     preprocessing_on_tfds()
 
 if __name__ == "__main__":

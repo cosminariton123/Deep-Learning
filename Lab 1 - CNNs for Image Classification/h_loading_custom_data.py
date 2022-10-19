@@ -61,7 +61,8 @@ def main():
     model_with_shuffle.fit(
         Generator(os.path.join("custom_datasets", "mnist", "train"), batch_size = 64, shuffle = True),
         epochs = 5,
-        validation_data = Generator(os.path.join("custom_datasets", "mnist", "val"), batch_size = 64, shuffle = True)
+        validation_data = Generator(os.path.join("custom_datasets", "mnist", "val"), batch_size = 64, shuffle = True),
+        shuffle = False
     )
     print("\n\nTraining without shuffle:")
     model_without_shuffle.fit(

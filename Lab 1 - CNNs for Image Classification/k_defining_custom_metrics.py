@@ -3,8 +3,6 @@ import tensorflow_datasets as tfds
 keras = tf.keras
 import keras.layers as layers
 import math
-import os
-import shutil
 
 
 def make_model(input_shape, custom_metric):
@@ -50,7 +48,7 @@ def train_with_custom_metrics(custom_metric):
     model.fit(
     train_ds.batch(batch_size).repeat(),
     steps_per_epoch = math.ceil(n_samples * 0.8 / batch_size),
-    epochs = 5,
+    epochs = 1,
     validation_data = val_ds.batch(batch_size),
     validation_steps = math.ceil(n_samples * 0.2 / batch_size),
     shuffle = False,
@@ -62,9 +60,42 @@ def custom_metric(y_true, y_pred):
     return tf.reduce_mean(tf.reduce_max(y_pred, axis = -1))
 
 
+def ex1(y_true, y_pred):
+    distance = 0.0
+    for i in range(len(y_pred)):
+        correct_class = tf.cast(y_true[i, 0], tf.int32)
+        correct_activation = y_pred[i, correct_class]
+        rest = tf.concat([y_pred[i, : correct_class], y_pred[i, correct_class + 1: ]], axis = 0)
+        maximum_activation = tf.reduce_max(rest)
+        distance += tf.abs(tf.cast(maximum_activation, tf.float32) - tf.cast(correct_activation, tf.float32))
+    return distance / tf.cast(len(y_pred), tf.float32)
+
+
+def ex2(y_true, y_pred):
+    distance = 0.0
+    for i in range(len(y_pred)):
+        correct_class = tf.cast(y_true[i, 0], tf.int32)
+        correct_activation = y_pred[i, correct_class]
+        rest = tf.concat([y_pred[i, : correct_class], y_pred[i, correct_class + 1: ]], axis = 0)
+        distance += tf.abs(tf.reduce_mean(rest) - tf.cast(correct_activation, tf.float32))
+    return distance / tf.cast(len(y_pred), tf.float32)
+
+def ex3(y_true, y_pred):
+    distance = 0.0
+    for i in range(len(y_pred)):
+        correct_class = tf.cast(y_true[i, 0], tf.int32)
+        correct_activation = y_pred[i, correct_class]
+        rest = tf.concat([y_pred[i, : correct_class], y_pred[i, correct_class + 1: ]], axis = 0)
+        aux_distance = tf.abs(tf.reduce_mean(rest) - tf.cast(correct_activation, tf.float32))
+        if aux_distance > 0.9:
+            distance += aux_distance
+    return distance / tf.cast(len(y_pred), tf.float32)
+
 
 def main():
-    train_with_custom_metrics(custom_metric)
+    train_with_custom_metrics(ex1)
+    train_with_custom_metrics(ex2)
+    train_with_custom_metrics(ex3)
 
 
 if __name__ == "__main__":

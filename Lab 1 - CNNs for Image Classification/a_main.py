@@ -8,6 +8,7 @@ import h_loading_custom_data
 import i_preprocessing
 import j_tensorboard_logs
 import k_defining_custom_metrics
+import l_lab1_cnn_cifar_solve
 
 
 def main():
@@ -21,6 +22,7 @@ def main():
     i_preprocessing.main()
     j_tensorboard_logs.main()
     k_defining_custom_metrics.main()
+    l_lab1_cnn_cifar_solve.main()
 
 
 if __name__ == '__main__':

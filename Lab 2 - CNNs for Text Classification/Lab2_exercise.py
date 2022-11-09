@@ -9,32 +9,45 @@ import keras.layers as layers
 import numpy as np
 
 import tensorflow as tf
-from keras.preprocessing.text import Tokenizer
 import keras
+import matplotlib.pyplot as plt
 
 
+def plot_history(history):
+    plt.style.use('ggplot')
+    acc = history.history['accuracy']
+    val_acc = history.history['val_accuracy']
+    loss = history.history['loss']
+    val_loss = history.history['val_loss']
+    x = range(1, len(acc) + 1)
 
-def get_cnn_model_v1():
-    maxlen = 1000
-    max_features = 10000
-    batch_size = 64
-    embedding_dims = 100
-    filters = 128
-    ks = [3, 5, 5] # kernel_size
-    hidden_dims = 128
-    epochs = 10
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 2, 1)
+    plt.plot(x, acc, 'b', label='Training accuracy')
+    plt.plot(x, val_acc, 'r', label='Validation accuracy')
+    plt.title('Training and validation accuracy')
+    plt.legend()
+    plt.subplot(1, 2, 2)
+    plt.plot(x, loss, 'b', label='Training loss')
+    plt.plot(x, val_loss, 'r', label='Validation loss')
+    plt.title('Training and validation loss')
+    plt.legend()
+    plt.show()
+
+
+def get_cnn_model_v1(maxlen, max_features, embedding_dims, filters, ks, hidden_dims):
 
     model = Sequential()
 
     model.add(Embedding(max_features, embedding_dims, input_length=maxlen))
     model.add(Dropout(0.4))
-    model.add(Conv1D(128, 3, 1, "same", activation="relu"))
+    model.add(Conv1D(filters, ks[0], 1, "same", activation="relu"))
     model.add(MaxPooling1D())
-    model.add(Conv1D(128, 5, 1, "same", activation="relu"))
+    model.add(Conv1D(filters, ks[1], 1, "same", activation="relu"))
     model.add(BatchNormalization())
     model.add(MaxPooling1D())
     model.add(Flatten())
-    model.add(Dense(128, activation="relu"))
+    model.add(Dense(hidden_dims, activation="relu"))
     model.add(Dropout(0.5))
     model.add(Dense(1, activation="sigmoid"))
 
@@ -52,9 +65,9 @@ def main():
     batch_size = 64
     embedding_dims = 100
     filters = 128
-    ks = [3, 5, 5] # kernel_size
+    ks = [3, 5]
     hidden_dims = 128
-    epochs = 10
+    epochs = 50
 
 
     (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=10000)
@@ -71,10 +84,11 @@ def main():
 
 
   
-    model = get_cnn_model_v1()
+    model = get_cnn_model_v1(maxlen, max_features, embedding_dims, filters, ks, hidden_dims)
 
     # TODO 3.4. Train (fit) the model
     history = model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_test, y_test), verbose=1, shuffle=True)
+    plot_history(history)
         
 
 

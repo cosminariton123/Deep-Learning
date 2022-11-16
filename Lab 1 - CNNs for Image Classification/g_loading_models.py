@@ -6,7 +6,7 @@ import random
 
 
 def load_best_model(): 
-    return tf.keras.models.load_model('./checkpoints/best_model.hdf5')
+    return tf.keras.models.load_model('./Lab 1 - CNNs for Image Classification/checkpoints/best_model.hdf5')
 
 
 def predict_1_random(model):

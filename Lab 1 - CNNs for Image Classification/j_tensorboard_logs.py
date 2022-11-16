@@ -60,7 +60,7 @@ def train_with_logs(tensorboard_callback):
 
 
 def main():
-    log_dir = "./logs"
+    log_dir = os.path.join("Lab 1 - CNNs for Image Classification", "logs")
 
     batch_size = 64
     tensorboard_callback = tf.keras.callbacks.TensorBoard(

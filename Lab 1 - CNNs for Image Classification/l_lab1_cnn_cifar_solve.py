@@ -16,6 +16,7 @@ def summarize_diagnostics(history):
     plt.title('Classification Accuracy')
     plt.plot(history.history['accuracy'], color='blue', label='train')
     plt.plot(history.history['val_accuracy'], color='orange', label='test')
+    plt.legend()
     plt.show()
 
 
@@ -33,7 +34,7 @@ def make_model():
 
     layer = layers.Conv2D(32, (3, 3), activation = "relu", padding="same")(layer)
     layer = layers.Conv2D(32, (3, 3), activation = "relu", padding="same")(layer)
-    layer = layers.MaxPool2D((2, 2))(layer)#try_without
+    layer = layers.MaxPool2D((2, 2))(layer)
     layer = layers.Dropout(1/4)(layer)
     layer = layers.Flatten()(layer)
     layer = layers.Dense(512, activation="relu")(layer)

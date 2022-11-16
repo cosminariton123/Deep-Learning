@@ -78,12 +78,12 @@ def preprocessing_on_custom_dataset():
     batch_size = 64
     model = make_model((128, 128, 1))
     model.fit(
-        Generator(os.path.join("custom_datasets", "mnist", "train"), batch_size = batch_size, shuffle = True, preprocessing_function = format_image),
+        Generator(os.path.join("Lab 1 - CNNs for Image Classification" ,"custom_datasets", "mnist", "train"), batch_size = batch_size, shuffle = True, preprocessing_function = format_image),
         epochs = 5,
-        validation_data = Generator(os.path.join("custom_datasets", "mnist", "val"), batch_size = batch_size, shuffle = False, preprocessing_function = format_image),
+        validation_data = Generator(os.path.join("Lab 1 - CNNs for Image Classification" ,"custom_datasets", "mnist", "val"), batch_size = batch_size, shuffle = False, preprocessing_function = format_image),
         shuffle = False
     )
-    print(model.evaluate(Generator(os.path.join("custom_datasets", "mnist", "test"), batch_size = batch_size, shuffle = False, preprocessing_function = format_image)))
+    print(model.evaluate(Generator(os.path.join("Lab 1 - CNNs for Image Classification" ,"custom_datasets", "mnist", "test"), batch_size = batch_size, shuffle = False, preprocessing_function = format_image)))
 
 
 def preprocessing_on_tfds():

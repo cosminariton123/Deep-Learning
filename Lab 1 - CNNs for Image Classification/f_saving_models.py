@@ -37,9 +37,9 @@ def save_model_after_every_epoch(model):
                                         )
     n_samples = meta.splits['train'].num_examples
 
-    if not os.path.exists('./checkpoints'):
-        os.makedirs('./checkpoints')
-    checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(filepath = './checkpoints/model.hdf5')
+    if not os.path.exists('./Lab 1 - CNNs for Image Classification/checkpoints'):
+        os.makedirs('./Lab 1 - CNNs for Image Classification/checkpoints')
+    checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(filepath = './Lab 1 - CNNs for Image Classification/checkpoints/model.hdf5')
 
     model.fit(
     train_ds.batch(batch_size).repeat(),
@@ -62,10 +62,10 @@ def save_only_best_model(model):
                                         )
     n_samples = meta.splits['train'].num_examples
 
-    if not os.path.exists('./checkpoints'):
-        os.makedirs('./checkpoints')
+    if not os.path.exists('./Lab 1 - CNNs for Image Classification/checkpoints'):
+        os.makedirs('./Lab 1 - CNNs for Image Classification/checkpoints')
     checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
-                                                                filepath = './checkpoints/best_model.hdf5',
+                                                                filepath = './Lab 1 - CNNs for Image Classification/checkpoints/best_model.hdf5',
                                                                 save_only_best_model = True
                                                                 )
 

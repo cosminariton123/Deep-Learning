@@ -61,17 +61,16 @@ def get_cnn_model_v1(maxlen, max_features, embedding_dims, filters, ks, hidden_d
 
 def main():
     maxlen = 1000
-    max_features = 10000
+    max_features = 20000
     batch_size = 64
     embedding_dims = 100
     filters = 128
     ks = [3, 5]
     hidden_dims = 128
-    epochs = 50
+    epochs = 10
 
 
-    (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=10000)
-    #x_train = x_train[20:]
+    (x_train, y_train), (x_test, y_test) = imdb.load_data(num_words=max_features, skip_top=20)
 
     print(len(x_train), 'train sequences')
     print(len(x_test), 'test sequences')
@@ -88,6 +87,13 @@ def main():
 
     # TODO 3.4. Train (fit) the model
     history = model.fit(x_train, y_train, batch_size=batch_size, epochs=epochs, validation_data=(x_test, y_test), verbose=1, shuffle=True)
+
+    loss, accuracy = model.evaluate(x_train, y_train, verbose=True)
+    print(f"Training Accuracy: {accuracy}")
+
+    # 8.2. Evaluate the accuracy and loss on the test set
+    loss, accuracy = model.evaluate(x_test, y_test, verbose=False)
+    print(f"Testing Accuracy:  {accuracy}")
     plot_history(history)
         
 

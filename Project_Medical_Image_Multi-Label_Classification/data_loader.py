@@ -4,6 +4,11 @@ import math
 import numpy as np
 import cv2
 
+
+def load_samples(samples_dir):
+    return [os.path.join(samples_dir, filepath) for filepath in os.listdir(samples_dir)]
+    
+
 def load_labels(path):
     with open(path, "r") as f:
         file = f.read()
@@ -30,7 +35,7 @@ def shuffle_samples_and_labels(samples, labels):
 
 class Generator(keras.utils.Sequence):
     def __init__(self, samples_dir, labels_path, batch_size, shuffle = True):
-        self.image_paths = np.array([os.path.join(samples_dir, filepath) for filepath in os.listdir(samples_dir)])
+        self.image_paths = np.array(load_samples(samples_dir))
 
         self.labels = np.array(load_labels(labels_path))
 

@@ -102,6 +102,8 @@ def make_cnn_model_for_characters(vocab_size, input_size, embedding_weights, con
 
     model.compile(optimizer=optimizer, loss=loss, metrics=["accuracy"])
     
+    model.summary()
+
     return model
 
 def main():

@@ -59,22 +59,22 @@ def main():
 
     print("\n\nTraining with shuffle: ")
     model_with_shuffle.fit(
-        Generator(os.path.join("custom_datasets", "mnist", "train"), batch_size = 64, shuffle = True),
+        Generator(os.path.join("Lab 1 - CNNs for Image Classification", "custom_datasets", "mnist", "train"), batch_size = 64, shuffle = True),
         epochs = 5,
-        validation_data = Generator(os.path.join("custom_datasets", "mnist", "val"), batch_size = 64, shuffle = True),
+        validation_data = Generator(os.path.join("Lab 1 - CNNs for Image Classification", "custom_datasets", "mnist", "val"), batch_size = 64, shuffle = True),
         shuffle = False
     )
     print("\n\nTraining without shuffle:")
     model_without_shuffle.fit(
-        Generator(os.path.join("custom_datasets", "mnist", "train"), batch_size = 64, shuffle = False),
+        Generator(os.path.join("Lab 1 - CNNs for Image Classification" ,"custom_datasets", "mnist", "train"), batch_size = 64, shuffle = False),
         epochs = 5,
-        validation_data = Generator(os.path.join("custom_datasets", "mnist", "val"), batch_size = 64, shuffle = False),
+        validation_data = Generator(os.path.join("Lab 1 - CNNs for Image Classification" ,"custom_datasets", "mnist", "val"), batch_size = 64, shuffle = False),
         shuffle = False
     )
 
     print("\n\nResults on test data:")
-    print("Shuffle: ", model_with_shuffle.evaluate(Generator(os.path.join("custom_datasets", "mnist", "test"), batch_size = 64)))
-    print("Without shuffle: ", model_without_shuffle.evaluate(Generator(os.path.join("custom_datasets", "mnist", "test"), batch_size = 64)))
+    print("Shuffle: ", model_with_shuffle.evaluate(Generator(os.path.join("Lab 1 - CNNs for Image Classification" ,"custom_datasets", "mnist", "test"), batch_size = 64)))
+    print("Without shuffle: ", model_without_shuffle.evaluate(Generator(os.path.join("Lab 1 - CNNs for Image Classification" ,"custom_datasets", "mnist", "test"), batch_size = 64)))
 
 if __name__ == "__main__":
     main()

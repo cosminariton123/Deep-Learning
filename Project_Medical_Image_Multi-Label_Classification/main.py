@@ -16,6 +16,12 @@ def main():
     limit_gpu_memory_growth()
 
     model = make_model()
+
+    callbacks = tf.keras.callbacks.ModelCheckpoint(
+                                        filepath = os.path.join(OUTPUT_DIR ,"best_model.hdf5"),
+                                        save_only_best_model = True
+                                        )
+
     history = model.fit(
         TrainingGenerator(samples_dir=TRAIN_SAMPLES_DIR,
         labels_path=TRAIN_LABELS_PATH,
@@ -34,10 +40,7 @@ def main():
             shuffle=True
             ),
 
-        checkpoint_callback = tf.keras.callbacks.ModelCheckpoint(
-                                                                filepath = os.path.join(OUTPUT_DIR ,"best_model.hdf5"),
-                                                                save_only_best_model = True
-                                                                )
+        callbacks = [callbacks],
 
         shuffle = False
     )

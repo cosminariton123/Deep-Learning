@@ -6,12 +6,13 @@ from keras.layers import Dense, Dropout, Flatten, Conv1D, MaxPooling1D, BatchNor
 def make_model():
     model = Sequential()
 
-    model.add(Conv2D(64, (5,5), activation="relu", input_shape=(64, 64, 1)))
+    model.add(Conv2D(128, (5,5), activation="relu", input_shape=(64, 64, 1)))
     model.add(Dropout(0.4))
     model.add(MaxPool2D((2, 2)))
-    model.add(Conv2D(64, (5,5), activation="relu"))
-    model.add(Dropout(0.4))
-    model.add(MaxPool2D((2, 2)))
+
+    for _ in range(2):
+        model.add(Conv2D(64, (5,5), activation="relu"))
+        model.add(Dropout(0.4))
 
     model.add(Flatten())
 
@@ -19,7 +20,7 @@ def make_model():
     model.add(Dropout(0.5))
     model.add(Dense(3, activation="sigmoid"))
 
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=['accuracy'])
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=[tf.keras.metrics.BinaryAccuracy(threshold=0.5)])
 
     model.summary()
 

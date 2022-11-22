@@ -10,7 +10,7 @@ def make_model():
     model.add(Dropout(0.4))
     model.add(MaxPool2D((2, 2)))
 
-    for _ in range(2):
+    for _ in range(5):
         model.add(Conv2D(64, (5,5), activation="relu"))
         model.add(Dropout(0.4))
 
@@ -20,7 +20,8 @@ def make_model():
     model.add(Dropout(0.5))
     model.add(Dense(3, activation="sigmoid"))
 
-    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=[tf.keras.metrics.BinaryAccuracy(threshold=0.5)])
+                                                                #TODO CHANGE REQUIRED
+    model.compile(loss='binary_crossentropy', optimizer='adam', metrics=[tf.keras.metrics.BinaryAccuracy(name="mean F1 score", threshold=0.5)])
 
     model.summary()
 

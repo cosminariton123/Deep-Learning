@@ -4,3 +4,4 @@ custom_datasets
 checkpoints
 logs
 dataset
+output

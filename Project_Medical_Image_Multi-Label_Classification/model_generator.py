@@ -1,26 +1,31 @@
 import tensorflow as tf
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten, Conv1D, MaxPooling1D, BatchNormalization, Conv2D, MaxPool2D
+from keras.layers import Dense, Dropout, Flatten, BatchNormalization, Conv2D, MaxPool2D
 
 
 def make_model():
-    model = Sequential()
+    input = tf.keras.Input(shape = (64, 64, 1))
 
-    model.add(Conv2D(128, (5,5), activation="relu", input_shape=(64, 64, 1)))
-    model.add(Dropout(0.4))
-    model.add(MaxPool2D((2, 2)))
+    layer = input
 
-    for _ in range(5):
-        model.add(Conv2D(64, (5,5), activation="relu"))
-        model.add(Dropout(0.4))
+    layer = Conv2D(64, (9, 9), activation="relu", input_shape=(64, 64, 1))(layer)
+    layer = Dropout(0.5)(layer)
+    layer = MaxPool2D()(layer)
 
-    model.add(Flatten())
+    for _ in range(2):
+        layer = Conv2D(64, (9, 9), activation="relu")(layer)
+        layer = Dropout(0.5)(layer)
 
-    model.add(Dense(64, activation="relu"))
-    model.add(Dropout(0.5))
-    model.add(Dense(3, activation="sigmoid"))
+    layer = Flatten()(layer)
 
-                                                                #TODO CHANGE REQUIRED
+    for _ in range(2):
+        layer = Dense(64, activation="relu")(layer)
+        layer = Dropout(0.5)(layer)
+        
+    layer = Dense(3, activation="sigmoid")(layer)
+
+                
+    model = tf.keras.Model(inputs = input, outputs = layer)
+                                                    #TODO CHANGE REQUIRED
     model.compile(loss='binary_crossentropy', optimizer='adam', metrics=[tf.keras.metrics.BinaryAccuracy(name="mean F1 score", threshold=0.5)])
 
     model.summary()

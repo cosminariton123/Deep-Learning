@@ -11,7 +11,7 @@ from paths import OUTPUT_DIR
 
 
 def main():
-    limit_gpu_memory_growth()
+    #limit_gpu_memory_growth()
 
     model = make_model()
 

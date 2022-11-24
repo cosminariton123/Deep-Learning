@@ -6,9 +6,10 @@ from data_loader import load_samples
 from data_loader import PredictionsGenerator
 from paths import TEST_SAMPLES_DIR, OUTPUT_DIR
 from preprocessing import preprocess_image
+from custom_metrics import mean_f1_score
 
 def load_and_make_submission(model_path):
-    model = tf.keras.models.load_model(model_path)
+    model = tf.keras.models.load_model(model_path, custom_objects={"mean_f1_score" : mean_f1_score})
 
     predicts = model.predict(
         PredictionsGenerator(

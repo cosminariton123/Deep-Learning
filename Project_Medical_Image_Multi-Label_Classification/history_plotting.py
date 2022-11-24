@@ -3,15 +3,15 @@ import os
 
 def plot_history(history, path_to_save):
     plt.style.use("ggplot")
-    acc = history.history["mean F1 score"]
-    val_acc = history.history["val_mean F1 score"]
+    acc = history.history["mean_f1_score"]
+    val_acc = history.history["val_mean_f1_score"]
     loss = history.history["loss"]
     val_loss = history.history["val_loss"]
     x = range(1, len(acc) + 1)
 
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
-    plt.plot(x, acc, "b", label="Training mean F1 score")
+    plt.plot(x, acc, "b", label="Training mean F1 Score")
     plt.plot(x, val_acc, "r", label="Validation mean F1 score")
     plt.title("Training and validation mean F1 score")
     plt.legend()

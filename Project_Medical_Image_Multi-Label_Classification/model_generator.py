@@ -27,7 +27,6 @@ def make_model():
 
                 
     model = tf.keras.Model(inputs = input, outputs = layer)
-                                                    #TODO CHANGE REQUIRED
     model.compile(loss="binary_crossentropy", optimizer="adam", metrics=[mean_f1_score])
 
     model.summary()

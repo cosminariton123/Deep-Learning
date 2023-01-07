@@ -81,7 +81,7 @@ def plot_average_precision(history):
 
 
 def plot_precision(history, path_to_save):
-    plt.figure()
+    plt.figure(figsize=(25, 5))
     plt.subplot(1, 2, 1)
     plt.grid(True)
     plt.subplot(1, 2, 2)

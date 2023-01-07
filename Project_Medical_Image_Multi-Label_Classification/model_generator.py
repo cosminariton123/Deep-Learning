@@ -1,5 +1,5 @@
 import tensorflow as tf
-from keras.layers import Dense, Dropout, Flatten, BatchNormalization, Conv2D, MaxPool2D
+from keras.layers import Dense, Dropout, Flatten, BatchNormalization, Conv2D, MaxPool2D, SimpleRNN
 
 from custom_metrics import CUSTOM_METRICS
 from config import INPUT_SIZE
@@ -28,6 +28,27 @@ def make_model():
     layer = Dense(3, activation="sigmoid")(layer)
 
                 
+    model = tf.keras.Model(inputs = input, outputs = layer)
+    model.compile(loss="binary_crossentropy", optimizer="adam", metrics=CUSTOM_METRICS)
+
+    model.summary()
+
+    return model
+
+def make_model_2():
+    input = tf.keras.Input(shape = () + INPUT_SIZE)
+
+    layer = input
+
+    layer = SimpleRNN(2048, activation="relu")(layer)
+    layer = Dropout(0.5)(layer)
+
+    for _ in range(2):
+        layer = Dense(1024, activation="relu")(layer)
+        layer = Dropout(0.5)(layer)
+
+    layer = Dense(3, activation="sigmoid")(layer)
+
     model = tf.keras.Model(inputs = input, outputs = layer)
     model.compile(loss="binary_crossentropy", optimizer="adam", metrics=CUSTOM_METRICS)
 

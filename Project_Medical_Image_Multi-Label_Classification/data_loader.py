@@ -4,6 +4,8 @@ import math
 import numpy as np
 import cv2
 
+from config import INPUT_SIZE
+
 
 def load_samples(samples_dir):
     return [os.path.join(samples_dir, filepath) for filepath in os.listdir(samples_dir)]
@@ -55,7 +57,7 @@ class TrainingGenerator(keras.utils.Sequence):
         filepaths = self.sample_paths[self.batch_size * iteration_n : self.batch_size * (iteration_n + 1)]
         labels = self.labels[self.batch_size * iteration_n : self.batch_size * (iteration_n + 1)]
         
-        samples = np.array([np.reshape(cv2.imread(filepath, cv2.IMREAD_GRAYSCALE), (64, 64, 1)) for filepath in filepaths])
+        samples = np.array([np.reshape(cv2.imread(filepath, cv2.IMREAD_GRAYSCALE), INPUT_SIZE) for filepath in filepaths])
 
         preprocessed_samples = list()
         preprocessed_labels = list()
@@ -74,15 +76,10 @@ class TrainingGenerator(keras.utils.Sequence):
 
 
 class PredictionsGenerator(keras.utils.Sequence):
-    def __init__(self, samples_dir, batch_size, preprocessing_procedure, shuffle = True):
+    def __init__(self, samples_dir, batch_size, preprocessing_procedure):
         self.sample_paths = np.array(load_samples(samples_dir))
 
         self.preprocessing_procedure = preprocessing_procedure
-
-        self.shuffle = shuffle
-
-        if self.shuffle:
-            self.sample_paths, _ = shuffle_samples_and_labels(self.sample_paths, np.zeros(len(self.sample_paths)))
         
         self.batch_size = batch_size
 
@@ -92,7 +89,7 @@ class PredictionsGenerator(keras.utils.Sequence):
     def __getitem__(self, iteration_n):
         filepaths = self.sample_paths[self.batch_size * iteration_n : self.batch_size * (iteration_n + 1)]
         
-        samples = np.array([np.reshape(cv2.imread(filepath, cv2.IMREAD_GRAYSCALE), (64, 64, 1)) for filepath in filepaths])
+        samples = np.array([np.reshape(cv2.imread(filepath, cv2.IMREAD_GRAYSCALE), INPUT_SIZE) for filepath in filepaths])
 
         preprocessed_samples = list()
         for elem_data in samples:
@@ -101,7 +98,3 @@ class PredictionsGenerator(keras.utils.Sequence):
         preprocessed_samples = np.array(preprocessed_samples)
 
         return preprocessed_samples
-
-    def on_epoch_end(self):
-        if self.shuffle:
-            self.sample_paths, _ = shuffle_samples_and_labels(self.sample_paths, np.zeros(len(self.sample_paths)))

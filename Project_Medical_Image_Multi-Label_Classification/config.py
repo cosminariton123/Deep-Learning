@@ -1,0 +1,5 @@
+EPOCHS = 50
+
+INPUT_SIZE = (64, 64, 1)
+
+BATCH_SIZE = 128

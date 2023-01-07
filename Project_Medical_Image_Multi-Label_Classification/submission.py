@@ -6,17 +6,25 @@ from data_loader import load_samples
 from data_loader import PredictionsGenerator
 from paths import TEST_SAMPLES_DIR, OUTPUT_DIR
 from preprocessing import preprocess_image
-from custom_metrics import mean_f1_score
+from custom_metrics import CUSTOM_METRICS
+from config import BATCH_SIZE
+
+def compile_custom_objects():
+    custom_objects = dict()
+
+    for custom_metric in CUSTOM_METRICS:
+        custom_objects[custom_metric.__name__] = custom_metric
+    
+    return custom_objects
 
 def load_and_make_submission(model_path):
-    model = tf.keras.models.load_model(model_path, custom_objects={"mean_f1_score" : mean_f1_score})
+    model = tf.keras.models.load_model(model_path, custom_objects=compile_custom_objects())
 
     predicts = model.predict(
         PredictionsGenerator(
             samples_dir=TEST_SAMPLES_DIR,
-            batch_size=128,
+            batch_size=BATCH_SIZE,
             preprocessing_procedure=preprocess_image,
-            shuffle=False
         )
     )
 

@@ -1,10 +1,12 @@
 import tensorflow as tf
 from keras.layers import Dense, Dropout, Flatten, BatchNormalization, Conv2D, MaxPool2D
-from custom_metrics import mean_f1_score
+
+from custom_metrics import CUSTOM_METRICS
+from config import INPUT_SIZE
 
 
 def make_model():
-    input = tf.keras.Input(shape = (64, 64, 1))
+    input = tf.keras.Input(shape = INPUT_SIZE)
 
     layer = input
 
@@ -27,7 +29,7 @@ def make_model():
 
                 
     model = tf.keras.Model(inputs = input, outputs = layer)
-    model.compile(loss="binary_crossentropy", optimizer="adam", metrics=[mean_f1_score])
+    model.compile(loss="binary_crossentropy", optimizer="adam", metrics=CUSTOM_METRICS)
 
     model.summary()
 

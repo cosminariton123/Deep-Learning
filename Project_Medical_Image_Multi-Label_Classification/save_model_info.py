@@ -1,6 +1,12 @@
 import matplotlib.pyplot as plt
 import os
 
+
+def save_summary(string, save_path):
+    with open(os.path.join(save_path, "Summary.txt"), "w") as f:
+        f.write(string)
+
+
 def plot_loss(history, path_to_save):
     training_loss = history.history["loss"]
     validation_loss = history.history["val_loss"]

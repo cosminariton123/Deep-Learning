@@ -6,10 +6,17 @@ from keras.models import Sequential
 from data_loader import TrainingGenerator
 from paths import TRAIN_SAMPLES_DIR, TRAIN_LABELS_PATH, VALIDATION_LABELS_PATH, VALIDATION_SAMPLES_DIR
 from preprocessing import preprocess_image
-from history_plotting import plot_history
+from save_model_info import plot_history, save_summary
 from config import BATCH_SIZE, EPOCHS
 
 def search_for_best_model_and_save(model: Sequential , save_path):
+
+    summary = []
+    model.summary(show_trainable=True, print_fn=lambda line: summary.append(line))
+    summary = "\n".join(summary)
+    save_summary(summary, save_path)
+    print(summary)
+
     callbacks = tf.keras.callbacks.ModelCheckpoint(
                                     filepath = os.path.join(save_path ,"best_model.hdf5"),
                                     save_only_best_model = True

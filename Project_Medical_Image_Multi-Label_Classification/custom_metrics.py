@@ -3,7 +3,7 @@ import tensorflow as tf
 def convert_from_matrix_to_vector_of_appearence(matrix):
         return tf.reduce_sum(tf.unstack(matrix, axis=1), axis=1)
 
-def compute_tp_fp_tp(y_true, y_pred):
+def compute_tp_fp_fn(y_true, y_pred):
     y_true = tf.cast(y_true, tf.float32)
     y_pred = tf.cast(y_pred, tf.float32)
 
@@ -24,7 +24,7 @@ def compute_tp_fp_tp(y_true, y_pred):
 
 def mean_f1_score(y_true, y_pred):
 
-    tp, fp, fn = compute_tp_fp_tp(y_true, y_pred)
+    tp, fp, fn = compute_tp_fp_fn(y_true, y_pred)
 
     f1 = 2 * tp / (2 * tp + fp + fn)
     f1_mean = tf.reduce_mean(f1)
@@ -32,22 +32,22 @@ def mean_f1_score(y_true, y_pred):
     return f1_mean
 
 def first_class_precision(y_true, y_pred):
-    tp, fp, fn = compute_tp_fp_tp(y_true, y_pred)
+    tp, fp, fn = compute_tp_fp_fn(y_true, y_pred)
 
     return (tp / (tp + fp))[0]
 
 def second_class_precision(y_true, y_pred):
-    tp, fp, fn = compute_tp_fp_tp(y_true, y_pred)
+    tp, fp, fn = compute_tp_fp_fn(y_true, y_pred)
 
     return (tp / (tp + fp))[1]
 
 def third_class_precision(y_true, y_pred):
-    tp, fp, fn = compute_tp_fp_tp(y_true, y_pred)
+    tp, fp, fn = compute_tp_fp_fn(y_true, y_pred)
 
     return (tp / (tp + fp))[2]
 
 def average_class_precision(y_true, y_pred):
-    tp, fn, fp = compute_tp_fp_tp(y_true, y_pred)
+    tp, fn, fp = compute_tp_fp_fn(y_true, y_pred)
 
     return tf.reduce_mean(tp / (tp + fp))
 

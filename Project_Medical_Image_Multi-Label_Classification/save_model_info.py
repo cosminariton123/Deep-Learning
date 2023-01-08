@@ -23,7 +23,7 @@ def plot_loss(history, path_to_save):
     plt.legend()
     plt.savefig(os.path.join(path_to_save, "Learning loss.png"), bbox_inches="tight")
 
-def plot_accuracy(history, path_to_save):
+def plot_f1_score(history, path_to_save):
     training_accuracy = history.history["mean_f1_score"]
     validation_accuracy = history.history["val_mean_f1_score"]
 
@@ -104,5 +104,5 @@ def plot_precision(history, path_to_save):
 
 def plot_history(history, path_to_save):
     plot_loss(history, path_to_save)
-    plot_accuracy(history, path_to_save)
+    plot_f1_score(history, path_to_save)
     plot_precision(history, path_to_save)

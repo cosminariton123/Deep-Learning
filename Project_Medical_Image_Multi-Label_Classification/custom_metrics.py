@@ -47,7 +47,7 @@ def third_class_precision(y_true, y_pred):
     return (tp / (tp + fp))[2]
 
 def average_class_precision(y_true, y_pred):
-    tp, fn, fp = compute_tp_fp_fn(y_true, y_pred)
+    tp, fp, fn = compute_tp_fp_fn(y_true, y_pred)
 
     return tf.reduce_mean(tp / (tp + fp))
 

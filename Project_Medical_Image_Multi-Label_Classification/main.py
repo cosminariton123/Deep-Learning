@@ -14,12 +14,12 @@ def main():
     #limit_gpu_memory_growth()
 
     #Set INPUT_SIZE to (64, 64, 1) in config
-    model = make_model()
+    #model = make_model()
 
     #Set INPUT_SIZE to (64, 64) in config
-    #model = make_model_2()
+    model = make_model_2()
 
-    this_model_path = os.path.join(OUTPUT_DIR, "modelCNN")
+    this_model_path = os.path.join(OUTPUT_DIR, "modelRNN")
 
     if not os.path.exists(OUTPUT_DIR):
         os.mkdir(OUTPUT_DIR)
@@ -28,7 +28,7 @@ def main():
         os.mkdir(this_model_path)
     search_for_best_model_and_save(model, this_model_path)
 
-    load_and_make_submission(os.path.join(OUTPUT_DIR, "modelRNN", "best_model.hdf5"))
+    #load_and_make_submission(os.path.join(OUTPUT_DIR, "modelCNN", "best_model.hdf5"))
 
 
 if __name__ == "__main__":
